@@ -1,0 +1,8 @@
+- id: code-scan-action
+  name: Check Staged Commits for PII
+  description: this hook checks if modified files have PII and marks it.
+  entry: code_scan_action
+  verbose: true
+  require_serial: true
+  language: python
+  types: [file, text]
