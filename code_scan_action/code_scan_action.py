@@ -8,7 +8,7 @@ from typing import Any, Dict, List, Set, Tuple
 ##
 #
 ##
-def get_response_from_api(content, url, enabled_entity_list, blocked_list):
+def get_response_from_api(content, url):
     payload = {"data": content}
     headers = {"Content-Type": "application/json"}
 
@@ -35,7 +35,7 @@ class PiiResult:
 #
 ##
 def check_for_pii(
-    filename: str, url: str, enabled_entity_list: List[str], blocked_list: List[str]
+    filename: str, url: str, enabled_entity_list: List[str], ignore_entities: List[str]
 ) -> List[PiiResult]:
     print(filename)
     # Open text file in read mode
@@ -47,10 +47,7 @@ def check_for_pii(
     # Close file
     source_file.close()
 
-    # api_pii_results = get_response_from_api(added_text, url, enabled_entity_list, blocked_list)
-    api_pii_results = get_response_from_api(
-        data, url, enabled_entity_list, blocked_list
-    )
+    api_pii_results = get_response_from_api(data, url)
 
     pii_results: List[PiiResult] = []
     #    for hunk, api_pii_result in zip(hunks, api_pii_results):
@@ -60,16 +57,17 @@ def check_for_pii(
     #                pii_results.append(PiiResult(filename, line_number, start_index, entity_length, pii_dict["best_label"]))
     #
     for entity in api_pii_results["data"]:
-        pii_results.append(
-            PiiResult(
-                filename,
-                100,
-                entity["BeginOffset"],
-                entity["EndOffset"],
-                entity["EndOffset"] - entity["BeginOffset"],
-                entity["Type"],
+        if entity["Type"] not in ignore_entities:
+            pii_results.append(
+                PiiResult(
+                    filename,
+                    100,
+                    entity["BeginOffset"],
+                    entity["EndOffset"],
+                    entity["EndOffset"] - entity["BeginOffset"],
+                    entity["Type"],
+                )
             )
-        )
 
     return pii_results
 
@@ -97,15 +95,15 @@ def main():
             "ROUTING_NUMBER",
         ],
     )
-    parser.add_argument("--blocked-list", type=str, nargs="+")
+    parser.add_argument("--ignore-entities", type=str, nargs="+")
     args = parser.parse_args()
 
     # To start we should just enable all by default, provide a bigger list of defaults above
     enabled_entity_list = [item.upper() for item in args.enabled_entities]
 
-    # Change this to ignore or skip rather than block
-    blocked_list = (
-        [blocked for blocked in args.blocked_list] if args.blocked_list else []
+    # API will return all found entities, we probably want to ignore a few types (like URL and EMAIL)
+    ignore_entities = (
+        [ignored for ignored in args.ignore_entities] if args.ignore_entities else []
     )
 
     try:
@@ -113,7 +111,10 @@ def main():
             result
             for filename in args.filenames
             for result in check_for_pii(
-                os.path.abspath(filename), args.url, enabled_entity_list, blocked_list
+                os.path.abspath(filename),
+                args.url,
+                enabled_entity_list,
+                ignore_entities,
             )
         ]
     except RuntimeError as e:
