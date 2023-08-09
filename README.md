@@ -1,4 +1,1 @@
 # code-scan-action
-#
-#
-#
