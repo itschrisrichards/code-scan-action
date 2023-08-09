@@ -95,7 +95,8 @@ def main():
             "ROUTING_NUMBER",
         ],
     )
-    parser.add_argument("--ignore-entities", type=str, nargs="+")
+    # parser.add_argument("--ignore-entities", type=str, nargs="+")
+    parser.add_argument("--ignore-entities", type=str)
     args = parser.parse_args()
 
     # To start we should just enable all by default, provide a bigger list of defaults above
@@ -103,7 +104,9 @@ def main():
 
     # API will return all found entities, we probably want to ignore a few types (like URL and EMAIL)
     ignore_entities = (
-        [ignored for ignored in args.ignore_entities] if args.ignore_entities else []
+        [ignored for ignored in args.ignore_entities.split(",")]
+        if args.ignore_entities
+        else []
     )
 
     try:
