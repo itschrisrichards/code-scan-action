@@ -66,6 +66,7 @@ def check_for_pii(
                 100,
                 entity["BeginOffset"],
                 entity["EndOffset"],
+                entity["EndOffset"] - entity["BeginOffset"],
                 entity["Type"],
             )
         )

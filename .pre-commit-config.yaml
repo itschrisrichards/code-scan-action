@@ -9,8 +9,13 @@ repos:
     rev: 22.10.0
     hooks:
       - id: black
-  - repo: https://github.com/itschrisrichards/code-scan-action
-    rev: 2d189a30eed36ecdd95ba51ff711ff62cad35465
-    hooks:
-      - id: code-scan-action
-        verbose: true
+#  - repo: https://github.com/itschrisrichards/code-scan-action
+#    rev: 0ce643d862a5663a6dd4d51a3ffcaea7b443f61f
+#    hooks:
+#      - id: code-scan-action
+#        args:
+#          [
+#            "--url",
+#            "https://490a-74-96-33-87.ngrok-free.app/api/code/scan"
+#          ]
+#        verbose: true

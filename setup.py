@@ -11,7 +11,7 @@ setup(
     description=DESCRIPTION,
     packages=find_packages(),
     install_requires=[
-        "requests==2.28.1",
+        "requests>=2.31.0",
         "python-dotenv==0.19.0",
         "unidiff~=0.7.4",
     ],
