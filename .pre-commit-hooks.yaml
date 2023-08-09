@@ -1,6 +1,6 @@
 - id: code-scan-action
   name: Check Staged Commits for PII
-  description: this hook checks if modified files have PII and marks it.
+  description: This hook checks if stage commit files have PII.
   entry: code_scan_action
   verbose: true
   require_serial: true
