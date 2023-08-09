@@ -5,10 +5,10 @@ repos:
       - id: check-yaml
       - id: end-of-file-fixer
       - id: trailing-whitespace
-  - repo: https://github.com/psf/black
-    rev: 22.10.0
-    hooks:
-      - id: black
+#  - repo: https://github.com/psf/black
+#    rev: 22.10.0
+#    hooks:
+#      - id: black
   - repo: https://github.com/itschrisrichards/code-scan-action
     rev: 7bdc46a24ba71deb54f3471710b09ef29f0c9f02
     hooks:

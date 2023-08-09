@@ -10,9 +10,10 @@ from typing import Any, Dict, List, Set, Tuple
 ##
 def get_response_from_api(content, url):
     payload = {"data": content}
-    headers = {"Content-Type": "application/json"}
 
     # TODO: need some sort of auth header
+    headers = {"Content-Type": "application/json"}
+
     response = requests.post(url, json=payload, headers=headers)
     response.raise_for_status()
     return response.json()
@@ -34,10 +35,7 @@ class PiiResult:
 ##
 #
 ##
-def check_for_pii(
-    filename: str, url: str, enabled_entity_list: List[str], ignore_entities: List[str]
-) -> List[PiiResult]:
-    print(filename)
+def check_for_pii(filename: str, url: str, enabled_entity_list: List[str], ignore_entities: List[str]) -> List[PiiResult]:
     # Open text file in read mode
     source_file = open(filename, "r")
 
@@ -47,21 +45,17 @@ def check_for_pii(
     # Close file
     source_file.close()
 
+    # Call Louper API with code contents
     api_pii_results = get_response_from_api(data, url)
 
+    # Assemble result array based on include/ignore preferences
     pii_results: List[PiiResult] = []
-    #    for hunk, api_pii_result in zip(hunks, api_pii_results):
-    #        for pii_dict in api_pii_result["entities"]:
-    #            line_number, start_index, entity_length = get_line_offset(hunk, pii_dict)
-    #            if line_number not in ignored_lines:
-    #                pii_results.append(PiiResult(filename, line_number, start_index, entity_length, pii_dict["best_label"]))
-    #
     for entity in api_pii_results["data"]:
         if entity["Type"] not in ignore_entities:
             pii_results.append(
                 PiiResult(
                     filename,
-                    100,
+                    100,  # TODO: figure out line numbering
                     entity["BeginOffset"],
                     entity["EndOffset"],
                     entity["EndOffset"] - entity["BeginOffset"],
@@ -95,7 +89,6 @@ def main():
             "ROUTING_NUMBER",
         ],
     )
-    # parser.add_argument("--ignore-entities", type=str, nargs="+")
     parser.add_argument("--ignore-entities", type=str)
     args = parser.parse_args()
 
@@ -104,11 +97,10 @@ def main():
 
     # API will return all found entities, we probably want to ignore a few types (like URL and EMAIL)
     ignore_entities = (
-        [ignored for ignored in args.ignore_entities.split(",")]
-        if args.ignore_entities
-        else []
+        [ignored.upper() for ignored in args.ignore_entities.split(",")] if args.ignore_entities else []
     )
 
+    # Check for Sensitive Data in all relevant files
     try:
         pii_results = [
             result
@@ -127,6 +119,7 @@ def main():
         )
         return 2
 
+    # Raise results to pre-commit or CLI
     if pii_results:
         for result in pii_results:
             print(
