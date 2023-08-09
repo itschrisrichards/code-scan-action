@@ -9,3 +9,8 @@ repos:
     rev: 22.10.0
     hooks:
       - id: black
+#  - repo: https://github.com/itschrisrichards/code-scan-action
+#    rev: 9c6aefabdd01b653abca0f352e09a4fe486e5505
+#    hooks:
+#      - id: code-scan-action
+#        verbose: true
