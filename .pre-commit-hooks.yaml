@@ -1,6 +1,6 @@
 - id: code-scan-action
-  name: Check Staged Commits for PII
-  description: This hook checks if stage commit files have PII.
+  name: Check Staged Commits for Sensitive Data
+  description: This hook checks if stage commit files have senstive data.
   entry: code_scan_action
   verbose: true
   require_serial: true
