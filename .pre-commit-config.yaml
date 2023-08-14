@@ -9,15 +9,15 @@ repos:
 #    rev: 22.10.0
 #    hooks:
 #      - id: black
-  - repo: https://github.com/itschrisrichards/code-scan-action
-    rev: 7bdc46a24ba71deb54f3471710b09ef29f0c9f02
-    hooks:
-      - id: code-scan-action
-        args:
-          [
-            "--url",
-            "https://490a-74-96-33-87.ngrok-free.app/api/code/scan",
-            "--ignore-entities",
-            "EMAIL,URL"
-          ]
-        verbose: true
+#  - repo: https://github.com/itschrisrichards/code-scan-action
+#    rev: 7bdc46a24ba71deb54f3471710b09ef29f0c9f02
+#    hooks:
+#      - id: code-scan-action
+#        args:
+#          [
+#            "--url",
+#            "https://1ef7-74-96-33-87.ngrok-free.app/api/code/scan",
+#            "--ignore-entities",
+#            "EMAIL,URL"
+#          ]
+#        verbose: true

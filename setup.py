@@ -11,9 +11,7 @@ setup(
     description=DESCRIPTION,
     packages=find_packages(),
     install_requires=[
-        "requests>=2.31.0",
-        "python-dotenv==0.19.0",
-        "unidiff~=0.7.4",
+        "requests>=2.31.0"
     ],
     keywords=["python", "pre-commit"],
     entry_points={

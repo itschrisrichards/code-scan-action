@@ -9,6 +9,15 @@ from typing import Any, Dict, List, Set, Tuple
 #
 ##
 def get_response_from_api(content, url):
+
+    # Get repo and user info from Github
+    # basename `git rev-parse --show-toplevel`
+# git config --list
+# user.email, user.name, remote.origin.url
+# git config user.email
+
+
+
     payload = {"data": content}
 
     # TODO: need some sort of auth header
@@ -51,15 +60,15 @@ def check_for_pii(filename: str, url: str, enabled_entity_list: List[str], ignor
     # Assemble result array based on include/ignore preferences
     pii_results: List[PiiResult] = []
     for entity in api_pii_results["data"]:
-        if entity["Type"] not in ignore_entities:
+        if entity["entity"]["stub"] not in ignore_entities:
             pii_results.append(
                 PiiResult(
                     filename,
                     100,  # TODO: figure out line numbering
-                    entity["BeginOffset"],
-                    entity["EndOffset"],
-                    entity["EndOffset"] - entity["BeginOffset"],
-                    entity["Type"],
+                    entity["start_offset"],
+                    entity["end_offset"],
+                    entity["end_offset"] - entity["start_offset"],
+                    entity["entity"]["stub"],
                 )
             )
 
