@@ -132,7 +132,7 @@ def main():
     if pii_results:
         for result in pii_results:
             print(
-                f"""Found sensitive data [{result.entity_type}]:[{result.value_remove_me}] - File "{result.filename}", line {result.line}, at index {result.start_index}:{result.end_index}"""
+                f"""Found sensitive data [{result.entity_type}]:[{result.value}] - File "{result.filename}", line {result.line}, at index {result.start_index}:{result.end_index}"""
             )
 
         print("Review the above problems before committing the changes.")
