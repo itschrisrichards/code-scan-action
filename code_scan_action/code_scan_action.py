@@ -36,7 +36,7 @@ class PiiResult:
     start_index: int
     end_index: int
     entity_length: int
-    entity_type: str,
+    entity_type: str
     value: str
 
 
