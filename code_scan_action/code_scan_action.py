@@ -68,7 +68,7 @@ def check_for_pii(filename: str, url: str, enabled_entity_list: List[str], ignor
                     entity["end_offset"],
                     entity["end_offset"] - entity["start_offset"],
                     entity["entity"]["stub"],
-                    entity["entity"]["value_remove_me"]
+                    entity["value_remove_me"]
                 )
             )
 
