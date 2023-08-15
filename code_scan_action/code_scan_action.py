@@ -16,8 +16,6 @@ def get_response_from_api(content, url):
 # user.email, user.name, remote.origin.url
 # git config user.email
 
-
-
     payload = {"data": content}
 
     # TODO: need some sort of auth header
@@ -38,7 +36,8 @@ class PiiResult:
     start_index: int
     end_index: int
     entity_length: int
-    entity_type: str
+    entity_type: str,
+    value: str
 
 
 ##
@@ -69,6 +68,7 @@ def check_for_pii(filename: str, url: str, enabled_entity_list: List[str], ignor
                     entity["end_offset"],
                     entity["end_offset"] - entity["start_offset"],
                     entity["entity"]["stub"],
+                    entity["entity"]["value_remove_me"]
                 )
             )
 
@@ -124,7 +124,7 @@ def main():
     except RuntimeError as e:
         print(e)
         print(
-            "If you get this message when running `pre-commit run -a` make sure to scan the files manually for PII instead of using this hook."
+            "If you get this message when running `pre-commit run -a` make sure to scan the files manually for sensitive data instead of using this hook."
         )
         return 2
 
@@ -132,13 +132,13 @@ def main():
     if pii_results:
         for result in pii_results:
             print(
-                f"""Found PII [{result.entity_type}]: File "{result.filename}", line {result.line}, at index {result.start_index}:{result.end_index}"""
+                f"""Found sensitive data [{result.entity_type}]:[{result.value_remove_me}] - File "{result.filename}", line {result.line}, at index {result.start_index}:{result.end_index}"""
             )
 
         print("Review the above problems before committing the changes.")
         return 1
     else:
-        print(f"Scanned {len(args.filenames)} file(s) and found no PII :)")
+        print(f"Scanned {len(args.filenames)} file(s) and found no sensitive data")
         return 0
 
     return 0
