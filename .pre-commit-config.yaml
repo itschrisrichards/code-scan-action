@@ -10,7 +10,7 @@ repos:
 #    hooks:
 #      - id: black
   - repo: https://github.com/itschrisrichards/code-scan-action
-    rev: 7a3b24e8fef0ff34c8ce30714c623b04544f0423
+    rev: 5ad627e46a57919ca52e94e77c64fb371dd5b458
     hooks:
       - id: code-scan-action
         args:
