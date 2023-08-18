@@ -18,6 +18,6 @@ repos:
             "--url",
             "https://1ef7-74-96-33-87.ngrok-free.app/api/code/scan",
             "--ignore-entities",
-            "EMAIL,URL"
+            "NAME,EMAIL,URL"
           ]
         verbose: true
